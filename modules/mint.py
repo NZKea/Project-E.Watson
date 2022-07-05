@@ -39,7 +39,6 @@ def mint(contract, key, address):
 
 def rapid_multi_mint(contract, delay, repeats):
     for repeat in range(repeats):
-        print(keys)
         for i, key in enumerate(keys):
             try:
                 mint(contract, key, bot_addresses[i])

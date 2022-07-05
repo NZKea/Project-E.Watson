@@ -8,8 +8,6 @@ def check_timestamps(waiting_contracts, countdown_contracts):
         if start_time > 0:
             waiting_contracts.remove(contract)
             countdown_contracts.append([contract, start_time])
-        else:
-            print(start_time)
 
 
 def check_starting(countdown_contracts):
