@@ -1,3 +1,5 @@
+"If you can't lick 'em, jine 'em" - James Eli Watson
+
 Readme will be added in future.
 
 Basic idea is:
