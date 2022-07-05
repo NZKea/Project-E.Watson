@@ -11,9 +11,9 @@ def check_timestamps(waiting_contracts, countdown_contracts):
 
 
 def check_starting(countdown_contracts):
-    seconds_before = 5
+    seconds_before = 10
     for contract in countdown_contracts:
         if contract[1] - get_time() < seconds_before:
-            mint.rapid_multi_mint(contract[0], 1, 5)
+            mint.rapid_multi_mint(contract[0], .75, 25)
             countdown_contracts.remove(contract)
             print("Attempted - check minted.txt")
