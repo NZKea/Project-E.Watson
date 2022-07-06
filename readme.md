@@ -1,4 +1,4 @@
-#Readme
+# Readme
 
 ###### "If you can't lick 'em, jine 'em" - James Eli Watson
 
@@ -8,7 +8,7 @@ Basic idea is:
 - Put a private key and address in a .env file
 - Fill out /files/contracts.json with the NFT contract
 
-##ENV File Example:
+## ENV File Example:
 keys = ‘[“KEY”, “KEY2”]’
 
 wallet_addresses = ‘[“MATCHING_ADDRESS”, “MATCHING_ADDRESS2”]’
