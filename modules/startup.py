@@ -8,7 +8,7 @@ def setup_contracts(waiting_contracts):
     for address, contract in contracts_to_watch.items():
         if address in minted_addresses:
             print("Skipping:" + str(address) + " this address has been minted before (in seen.txt)" )
-            break
+            continue
         else:
             try:
                 waiting_contracts.append(avax_contract(address))
