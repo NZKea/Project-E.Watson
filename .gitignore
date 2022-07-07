@@ -1,2 +1,5 @@
 /.env
 /seeds.txt
+modules/__pycache__/blockchain.cpython-310.pyc
+modules/__pycache__/mint.cpython-310.pyc
+modules/__pycache__/startup.cpython-310.pyc

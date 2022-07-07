@@ -4,7 +4,7 @@ import requests
 
 class avax_contract:
     def __init__(self, address, json):
-        self.address = address
+        self.address = str(address)
         self.abi = requests.get("https://api.snowtrace.io/api?module=contract&action=getabi&address=" + address).json()["result"]
         self.contract = chain.eth.contract(Web3.toChecksumAddress(address), abi=self.abi)
         self.price = json["price"]

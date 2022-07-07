@@ -20,7 +20,7 @@ from modules.mint import load_env_vars
 
 
 waiting_contracts = [] # Contract's without a start time
-countdown_contracts = [] #Contracts with a start time
+countdown_contracts = [] # Contracts with a start time
 
 
 def main_loop():
@@ -116,20 +116,30 @@ def wallets():
             break
 
 class new_contract():
-    def __init__(self, address, name, price, max, mint_function = "publicSaleMint"):
+    def __init__(self, address, name, price, max, trigger_function, mint_function):
         self.address = str(address).strip()
         self.name = str(name).strip()
         self.price = str(price).strip()
-        self.mint_function = str(mint_function).strip()
+        self.mint_function = str(mint_function)
         self.max = str(max).strip()
+        self.trigger_function = trigger_function
+        self.named_functions(trigger_function, mint_function)
         self.json = self.create_json()
+    
+    def named_functions(self,trigger_function, mint_function):
+        if len(trigger_function) < 2:
+            self.trigger_function = "allowlistStartTime"
+        if len(mint_function) < 2:
+            self.mint_function = "publicSaleMint"
+
     def create_json(self):
         return {
             self.address: {
                 "name": self.name,
                 "price": self.price,
                 "mint_function": self.mint_function,
-                "max": self.max
+                "max": self.max,
+                "trigger_function": self.trigger_function
             }
         }
 
@@ -142,12 +152,12 @@ def contracts():
             contract_choice = choice_dialog("Contracts", "Loaded contracts: " + str(contracts_list.keys()) )
             if contract_choice:
                 try:
-                    new_contract_input = text_in_dialog([["Address", "Contract Address"],["Name", "Name (use anything you want)"],["Price","Price (0 for free)"],["Max","Max amount (limit per wallet)"],["Mint Func", "Contract Function (leave blank for Joepegs default)"]])
-                    print(new_contract_input)
-                    x = new_contract( new_contract_input[0], new_contract_input[1], new_contract_input[2],  new_contract_input[3])
-                    contracts_list.update(x.json)
+                    new_contract_input = text_in_dialog([["Address", "Contract Address"],["Name", "Name (use anything you want)"],["Price","Price digit (0 for free)"],["Max","Max amount e.g 1 (limit per wallet)"],["Trigger Func", "Contract Trigger Function Name - (a function that returns either True or timestamp for start) (leave blank for Joepegs default)"],["Mint Func", "Contract Function Name (leave blank for Joepegs default)"]])
+                    contract = new_contract(new_contract_input[0], new_contract_input[1], new_contract_input[2], new_contract_input[3], new_contract_input[4],new_contract_input[5])
+                    contracts_list.update(contract.json)
                 except:
                     message_dialog("Error", "Failed to input details")
+                contract = new_contract(new_contract_input[0], new_contract_input[1], new_contract_input[2], new_contract_input[3], new_contract_input[4],new_contract_input[5])
             elif contract_choice == False:
                 contracts_list.clear()
                 json_contract_list.truncate(0)
