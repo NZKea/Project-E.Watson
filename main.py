@@ -100,13 +100,16 @@ def wallets():
         wallet_addresses = (json.loads(os.getenv('wallet_addresses')))
         keys = (json.loads(os.getenv('wallet_addresses')))
         wallet_choice = choice_dialog("Wallets",'Your current wallets: ' + str(wallet_addresses))
-        if wallet_choice: 
-            wallet_dialogs = text_in_dialog([["Address", "Address:"], ["Private Key", "Key:"]])
-            new_wallet = wallet_dialogs[0]
-            new_key = wallet_dialogs[1]
-            if new_wallet and new_key:
-                set_env(address_builder(wallet_addresses, new_wallet), "wallet_addresses")
-                set_env(address_builder(keys, new_key), "keys")
+        if wallet_choice:
+            try:
+                wallet_dialogs = text_in_dialog([["Address", "Address:"], ["Private Key", "Key:"]])
+                new_wallet = wallet_dialogs[0]
+                new_key = wallet_dialogs[1]
+                if new_wallet and new_key:
+                    set_env(address_builder(wallet_addresses, new_wallet), "wallet_addresses")
+                    set_env(address_builder(keys, new_key), "keys")
+            except:
+                message_dialog("Failed","Failed, check your inputs")
         elif wallet_choice == False:
             set_env('[]', "wallet_addresses")
         else:
@@ -114,11 +117,11 @@ def wallets():
 
 class new_contract():
     def __init__(self, address, name, price, max, mint_function = "publicSaleMint"):
-        self.address = str(address)
-        self.name = str(name)
-        self.price = str(price)
-        self.mint_function = str(mint_function)
-        self.max = str(max)
+        self.address = str(address).strip()
+        self.name = str(name).strip()
+        self.price = str(price).strip()
+        self.mint_function = str(mint_function).strip()
+        self.max = str(max).strip()
         self.json = self.create_json()
     def create_json(self):
         return {
@@ -138,10 +141,13 @@ def contracts():
             contracts_list = json.load(json_contract_list)
             contract_choice = choice_dialog("Contracts", "Loaded contracts: " + str(contracts_list.keys()) )
             if contract_choice:
-                new_contract_input = text_in_dialog([["Address", "Contract Address"],["Name", "Name (use anything you want)"],["Price","Price (0 for free)"],["Max","Max amount (limit per wallet)"],["Mint Func", "Contract Function (leave blank for Joepegs default)"]])
-                print(new_contract_input)
-                x = new_contract( new_contract_input[0], new_contract_input[1], new_contract_input[2],  new_contract_input[3])
-                contracts_list.update(x.json)
+                try:
+                    new_contract_input = text_in_dialog([["Address", "Contract Address"],["Name", "Name (use anything you want)"],["Price","Price (0 for free)"],["Max","Max amount (limit per wallet)"],["Mint Func", "Contract Function (leave blank for Joepegs default)"]])
+                    print(new_contract_input)
+                    x = new_contract( new_contract_input[0], new_contract_input[1], new_contract_input[2],  new_contract_input[3])
+                    contracts_list.update(x.json)
+                except:
+                    message_dialog("Error", "Failed to input details")
             elif contract_choice == False:
                 contracts_list.clear()
                 json_contract_list.truncate(0)
@@ -149,8 +155,6 @@ def contracts():
                 break
             json_contract_list.seek(0)
             json.dump(contracts_list, json_contract_list)
-
-
 
 
 if __name__ == "__main__":

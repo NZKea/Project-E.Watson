@@ -1,11 +1,14 @@
 from web3 import Web3
 import requests
 
+
 class avax_contract:
-    def __init__(self, address):
+    def __init__(self, address, json):
         self.address = address
         self.abi = requests.get("https://api.snowtrace.io/api?module=contract&action=getabi&address=" + address).json()["result"]
         self.contract = chain.eth.contract(Web3.toChecksumAddress(address), abi=self.abi)
+        self.price = json["price"]
+        self.max = json["max"]
 
     def call_no_inputs(self, function):
         return self.contract.functions[function]().call()
