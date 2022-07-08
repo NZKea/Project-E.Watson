@@ -7,11 +7,14 @@ class avax_contract:
         self.address = str(address)
         self.abi = requests.get("https://api.snowtrace.io/api?module=contract&action=getabi&address=" + address).json()["result"]
         self.contract = chain.eth.contract(Web3.toChecksumAddress(address), abi=self.abi)
-        self.price = json["price"]
+        self.mint = json["mint_function"]
+        self.trigger = json["trigger_function"]
+        self.aggressiveness = str(json["aggressiveness"])
         self.max = json["max"]
 
     def call_no_inputs(self, function):
         return self.contract.functions[function]().call()
+
     def call(self, function, inputs):
         return self.contract.functions[function](inputs).call()
 

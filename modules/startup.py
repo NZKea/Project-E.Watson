@@ -8,14 +8,14 @@ def setup_contracts(waiting_contracts):
     for address, json_contract in contracts_to_watch.items():
         if address.lower() in minted_addresses:
             print("Skipping:" + str(address) + " this address has been minted before (in seen.txt)" )
-            break
+            continue
         else:
             try:
                 waiting_contracts.append(avax_contract(address, json_contract))
                 try:
-                    print("Loaded " + json_contract["name"] + " " + address + ' each mint tx will try mint ' + json_contract["max"] + "for " + json_contract["price"] + " avax")
+                    print("Loaded " + json_contract["name"] + " " + address + ' each mint tx will try mint ' + json_contract["max"])
                 except:
-                    print("A contract was loaded but not all of its attributes could not be read.  May cause issue check contracts.json for mistakes")
+                    print("A contract was loaded but not all of its attributes could be read.  May cause issue check contracts.json for mistakes")
             except TypeError:
                 print("Invalid Address loaded from json")
             except:

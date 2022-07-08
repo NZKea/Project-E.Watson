@@ -22,17 +22,10 @@ def load_env_vars():
             print("Unexpected error passing wallet addresses", address)
 
 
-def get_price(contract):
-    if int(contract.price) > 0:
-        return contract.price
-    else:
-        return "0"
-
-def mint(contract, key, address, price):
+def mint(contract, key, address, mint_function):
     nonce = chain.eth.get_transaction_count(address)
-    mint_txn = contract.contract.functions.publicSaleMint(
-        price,
-        contract.max
+    mint_txn = mint_function(
+        int(contract.max)
     ).buildTransaction({
         #'chainId': 98000,
         'gas': 152883,
@@ -44,16 +37,18 @@ def mint(contract, key, address, price):
     sent_tx = chain.eth.send_raw_transaction(signed_tx.rawTransaction)
 
 
-def rapid_multi_mint(contract, delay, repeats):
-    price = get_price(contract)
+def rapid_multi_mint(contract, mint_settings):
+    delay = mint_settings[contract.aggressiveness]["delay"]
+    repeats = mint_settings[contract.aggressiveness]["repeats"]
+    mint_function = getattr(contract.contract.functions, contract.mint)
     for repeat in range(repeats):
         for i, key in enumerate(keys):
             try:
-                mint(contract, key, bot_addresses[i], price)
+                mint(contract, key, bot_addresses[i], mint_function)
             except IndexError:
                 print("Check that private keys and addresses match")
-            except:
-                print("Unknown minting error")
+            except Exception as e:
+                print("Unknown minting error" + str(e))
         time.sleep(delay)
     attempted_mint_list = open("./files/minted.txt", "a")
     attempted_mint_list.write(contract.address.lower() + ",")
