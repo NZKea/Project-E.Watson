@@ -6,7 +6,7 @@ A bot to mint avax NFT contracts, which can be triggered either by allowlist tim
 
 ## Docker
 
-**Docker build not currently working, clone the CLI branch and run without docker as described bellow to accesss the new features**
+**Docker build not currently working, clone the CLI branch and run without docker as described below to accesss the new features**
 
 There is a docker build of the CLI branch.  This includes GUI like command line config for wallets and contracts. I would suggest running on a digital ocean vps, their $4 cheapest option works well with ubuntu/the image linked below.  The commands would be:
 
